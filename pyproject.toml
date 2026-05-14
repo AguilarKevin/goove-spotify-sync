@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aa2g"
+version = "0.1.0"
+description = "Sync a Govee H617A LED strip to Spotify album art and beats"
+requires-python = ">=3.11"
+dependencies = [
+    "bleak>=3.0,<4",
+    "rumps>=0.4,<1",
+    "httpx>=0.27,<1",
+    "pillow>=11,<13",
+    "numpy>=2.1,<3",
+    "scikit-learn>=1.5,<2",
+    "keyring>=25,<26",
+    "sounddevice>=0.5,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.3",
+]
+package = [
+    "py2app==0.28.8",
+    "pyobjc-framework-Cocoa==10.3.2",
+]
+
+[project.scripts]
+aa2g = "aa2g.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

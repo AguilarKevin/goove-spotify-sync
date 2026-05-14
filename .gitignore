@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.env
+build/
+dist/
+.pytest_cache/
+.DS_Store
+
+# Claude Code per-user state
+.claude/settings.local.json
