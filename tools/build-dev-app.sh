@@ -45,7 +45,14 @@ EOF
 
 cat > "$APP_DIR/Contents/MacOS/aa2g-launcher" <<EOF
 #!/bin/bash
-exec "$VENV_PY" -m aa2g
+# No args   → launch the menu bar app
+# Has args  → pass them through to python -m, so CLI subcommands inherit
+#              the bundle's TCC identity (required for any Bluetooth access).
+if [ \$# -eq 0 ]; then
+  exec "$VENV_PY" -m aa2g
+else
+  exec "$VENV_PY" -m "\$@"
+fi
 EOF
 chmod +x "$APP_DIR/Contents/MacOS/aa2g-launcher"
 
