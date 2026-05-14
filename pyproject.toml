@@ -20,7 +20,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest==8.3.3",
+    "pytest==9.0.3",
 ]
 package = [
     "py2app==0.28.8",
