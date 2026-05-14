@@ -1,4 +1,4 @@
-# album-art-to-goove
+# goove-spotify-sync
 
 macOS menu bar app that drives a **Govee H617A** LED strip from Spotify's
 currently-playing track:
@@ -23,6 +23,8 @@ losslessly and works for any audio source (Apple Music, YouTube, etc.).
 ## Install
 
 ```bash
+git clone git@github.com:AguilarKevin/goove-spotify-sync.git
+cd goove-spotify-sync
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
