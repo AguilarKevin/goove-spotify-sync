@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import logging
 import threading
+from importlib.resources import files
 
 import rumps
 
@@ -12,6 +13,8 @@ from .govee import ble as ble_mod
 from .spotify import auth as spotify_auth
 from .state import AppState, VALID_MODES, VALID_STRATEGIES
 from .worker import Worker
+
+MENUBAR_ICON = str(files("aa2g.assets").joinpath("menubar.png"))
 
 log = logging.getLogger(__name__)
 
@@ -38,7 +41,13 @@ def _swatch(rgb: tuple[int, int, int] | None) -> str:
 
 class AlbumArtToGooveApp(rumps.App):
     def __init__(self, worker: Worker) -> None:
-        super().__init__("🎵", quit_button=None)
+        super().__init__(
+            name="aa2g",
+            title="aa2g",
+            icon=MENUBAR_ICON,
+            template=True,
+            quit_button=None,
+        )
         self.worker = worker
         self.state: AppState = worker.state
         self._build_menu()
