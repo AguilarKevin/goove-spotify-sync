@@ -62,14 +62,21 @@ Now Spotify plays through your speakers *and* BlackHole at the same time.
 
 ### 3. Discover your strip's BLE address
 
+You need the dev `.app` bundle (see [Run](#run) below) before this works —
+macOS TCC kills any non-bundled binary that touches Bluetooth. Once built:
+
 ```bash
-python -m aa2g.govee.ble discover
-# → 1A:2B:3C:4D:5E:6F  ihoment_H617A_XXXX
+tools/build-dev-app.sh                       # one-time
+tools/aa2g-cli.sh govee.ble discover
+# → 535782FD-7066-6384-2E61-77D5AF630627  Govee_H617A_0934
 ```
+
+macOS gives you a system-local CoreBluetooth UUID rather than the strip's
+real MAC address — that's normal, and `bleak` works with it directly.
 
 Confirm with a write test:
 ```bash
-python -m aa2g.govee.ble color 1A:2B:3C:4D:5E:6F 255 0 0   # red
+tools/aa2g-cli.sh govee.ble color 535782FD-7066-6384-2E61-77D5AF630627 255 0 0
 ```
 
 If macOS prompts for Bluetooth permission, allow it in System Settings →
@@ -109,14 +116,19 @@ Settings (mode, palette strategy, BLE address, BlackHole device) persist to
 
 ## Standalone CLI utilities
 
-Each subsystem has a runnable entry point for debugging without the menu bar:
+Each subsystem has a runnable entry point for debugging without the menu bar.
+Anything that touches Bluetooth must go through `tools/aa2g-cli.sh`, which
+runs it inside the dev `.app` bundle so macOS TCC doesn't kill the process.
 
 | Command | What it does |
 |---|---|
-| `python -m aa2g.govee.ble discover` | Scan for Govee H617A devices |
-| `python -m aa2g.govee.ble color ADDR R G B` | Set the strip to an RGB color |
-| `python -m aa2g.spotify.auth` | Run the PKCE flow and store tokens |
-| `python -m aa2g.color.extract URL` | Print the palette for an image URL |
+| `tools/aa2g-cli.sh govee.ble discover` | Scan for Govee H617A devices |
+| `tools/aa2g-cli.sh govee.ble color UUID R G B` | Set the strip to an RGB color |
+| `.venv/bin/python -m aa2g.spotify.auth` | Run the PKCE flow and store tokens |
+| `.venv/bin/python -m aa2g.color.extract URL` | Print the palette for an image URL |
+
+The Spotify and color utilities don't need the bundle wrapper — they only
+hit HTTPS and the local filesystem, which TCC doesn't gate.
 
 ## Tests
 
